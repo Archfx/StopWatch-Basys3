@@ -29,11 +29,11 @@ module stopWatch(
     );
     
     wire [3:0] hex3,hex2,hex1,hex0;
-    //wire d_pause,d_reset;
+    wire d_pause,d_reset;
     timer t ( 
                 .clk(clk),
-                .reset(reset),
-                .pause(pause),
+                .reset(d_reset),
+                .pause(d_pause),
                 .hex3(hex3),
                 .hex2(hex2),
                 .hex1(hex1),
@@ -50,17 +50,17 @@ module stopWatch(
                 .seven_seg(seven_seg)
    );
    
-//   debounce pausebtn(
-//                 .clk(clk), 
-//                 .n_reset(1),
-//                 .button_in(pause),
-//                 .DB_out(d_pause)
-//   );
+   debounce pausebtn(
+                 .clk(clk), 
+                 .n_reset(1),
+                 .button_in(pause),
+                 .DB_out(d_pause)
+   );
    
-//   debounce resetbtn(
-//                 .clk(clk), 
-//                 .n_reset(1),
-//                 .button_in(reset),
-//                 .DB_out(d_reset)
-//   );
+   debounce resetbtn(
+                 .clk(clk), 
+                 .n_reset(1),
+                 .button_in(reset),
+                 .DB_out(d_reset)
+   );
 endmodule

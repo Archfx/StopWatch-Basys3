@@ -36,47 +36,52 @@ module timer(
     reg count;
     
     always@(posedge clk) begin
-//        if (reset) begin
-//            oneHz_counter=oneHz_constant;
-//            hex3 = 4'd0;
-//            hex2 = 4'd0;
-//            hex1 = 4'd0;
-//            hex0 = 4'd0;
-//            count = 1;
-//        end
+        if (reset) begin
+            oneHz_counter=oneHz_constant;
+
+            count = 1;
+        end
         
-//        else begin
-//            if (pause) begin
-//                if (count) count = 0;
-//                else count = 1;
-//            end
+        else begin
+            if (pause) begin
+                if (count) count = 0;
+                else count = 1;
+            end
             
-//            if (count) begin
+            if (count) begin
                 oneHz_counter = oneHz_counter - 1;
                 oneHz_enable = (oneHz_counter == 0);
                 if (!oneHz_counter) oneHz_counter = oneHz_constant;
-//            end
-//        end
+            end
+        end
     end
     
-    always@(posedge oneHz_enable) begin
-        if (hex0<4'd9) hex0 = hex0 + 1;
+    always@(posedge oneHz_enable, posedge reset) begin
+        if (reset) begin
+            hex3 = 4'd0;
+            hex2 = 4'd0;
+            hex1 = 4'd0;
+            hex0 = 4'd0;
+        end
         else begin
-            if (hex1<4'd5) begin
-                hex1 = hex1 + 1;
-                hex0 = 0;
-            end
+            if (hex0<4'd9) hex0 = hex0 + 1;
             else begin
-                if (hex2<4'd9) begin
-                    hex2 = hex2 + 1;
-                    hex1 = 0;
+                if (hex1<4'd5) begin
+                    hex1 = hex1 + 1;
+                    hex0 = 0;
                 end
                 else begin
-                    if (hex3<4'd9) begin
-                        hex3 = hex3 + 1;
-                        hex2 = 0;
+                    if (hex2<4'd9) begin
+                        hex2 = hex2 + 1;
+                        hex1 = 0;
                     end
-                    else hex3 = 0;
+                    else begin
+                        if (hex3<4'd9) begin
+                            hex3 = hex3 + 1;
+                            hex2 = 0;
+                        end
+                        else hex3 = 0;
+                    end
                 end
             end
         end
